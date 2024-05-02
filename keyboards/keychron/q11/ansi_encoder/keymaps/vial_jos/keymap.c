@@ -17,6 +17,7 @@
 #include QMK_KEYBOARD_H
 #include "keychron_common.h"
 #include "features/achordion.h"
+#include "features/layer_lock.h"
 // clang-format off
 
 enum layers{
@@ -24,6 +25,10 @@ enum layers{
     MAC_FN,
     WIN_BASE,
     WIN_FN
+};
+
+enum custom_keycodes_user {
+  LAYER_LOCK = SAFE_RANGE // 0x7e40
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -79,9 +84,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_achordion(keycode, record))
         return false;
 
-    if (!process_record_keychron(keycode, record)) {
+    if (!process_layer_lock(keycode, record, LAYER_LOCK)) 
         return false;
-    }
+
+    if (!process_record_keychron(keycode, record))
+        return false;
 
     return true;
 }
@@ -90,6 +97,7 @@ void matrix_scan_user(void) {
     achordion_task();
 }
 
+/*
 bool achordion_eager_mod(uint8_t mod) {
   switch (mod) {
     case MOD_LSFT:
@@ -102,3 +110,4 @@ bool achordion_eager_mod(uint8_t mod) {
       return false;
   }
 }
+*/

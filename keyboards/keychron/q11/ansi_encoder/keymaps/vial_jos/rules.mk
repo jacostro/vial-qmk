@@ -15,3 +15,4 @@ SPLIT_KEYBOARD = yes
 VPATH += keyboards/keychron/common
 SRC += keychron_common.c
 SRC += features/achordion.c
+SRC += features/layer_lock.c
